@@ -43,10 +43,10 @@ app.get('/snippets/:id', function (req, res) {
   });
 });
 
-// Go to the random Github snippet page
-app.get('/snippets/random', function (req, res) {
-  res.sendFile('views/random.html' , { root : __dirname});
-});
+// // Go to the random Github snippet page
+// app.get('/snippets/random', function (req, res) {
+//   res.sendFile('views/random.html' , { root : __dirname});
+// });
 
 /*
  * JSON API Endpoints

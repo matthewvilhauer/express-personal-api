@@ -4,14 +4,18 @@ var template;
 var $snippetsList;
 var allSnippets;
 
-// Handlebar variables for a single snippet
-var templateSingle;
-var $snippetSingle;
-var snippetSingle;
+// // Handlebar variables for a single snippet
+// var templateSingle;
+// var $snippetSingle;
+// var snippetSingle;
 
 $(document).ready(function(){
 
     $snippetsList = $('#snippetTarget');
+
+    // compile handlebars template
+    var source = $('#snippets-template').html();
+    template = Handlebars.compile(source);
 
   $.ajax({
     method: 'GET',
@@ -64,6 +68,7 @@ $(document).ready(function(){
   });
 
   $("#search-form").on("submit", function(e) {
+      e.preventDefault();
       githubSearch();
   });
 
@@ -73,13 +78,9 @@ $(document).ready(function(){
 // note: we empty and re-render the collection each time our post data changes
 function render() {
 
-  // compile handlebars template
-  var source = $('#snippets-template').html();
-  template = Handlebars.compile(source);
-
   // empty existing snippets from view
   $snippetsList.empty();
-  $('#code-snippet-input').val('');
+  //$('#code-snippet-input').val('');
 
 
   // pass `allSnippets` into the template function
@@ -128,7 +129,6 @@ function handleSnippetError(e) {
 function getSingleSnippetSuccess(json) {
     allSnippets = json;
     console.log(snippet_single);
-    render();
 }
 function getSingleSnippetError(e) {
   console.log('uh oh');
@@ -139,7 +139,7 @@ function getSingleSnippetError(e) {
 // Create functions
 function newSnippetSuccess(json) {
   $('#newSnippetForm input').val('');
-  $('#newSnippetForm code').val('');
+  $('#newSnippetForm textarea').val('');
   allSnippets.push(json);
   render();
 }
@@ -185,7 +185,7 @@ function handleProfileError(e) {
 
 
 /**********
- * Random GitHub *
+ * GitHub functions *
  **********/
 function githubSearch() {
 
@@ -208,10 +208,8 @@ function githubSuccess(data) {
     console.log(e.name);
     $('#search-results').append("<a target="+"_blank"+" href="+e.html_url+">"+e.name+"</a>, ");
   });
-  // my_repos = data.name;
-  // console.log(my_repos);
-  // $("#results").append(data);
 }
+
 function githubError(e) {
   $('#search-results').text('');
   $('#search-results').html("<h4>No User found by that name, please try again.</h4>");
