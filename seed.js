@@ -40,19 +40,19 @@ var my_profile = [
 
 var snippets_list = [
   {
-  name: "Recursive example",
+  name: "Recursive Example",
   language: "javascript",
   code: "here is some javascript code",
   author: "codingwizard"
   },
   {
-  name: "The Great Gatsby",
+  name: "My Test HTML Code",
   language: "html",
   code: "here is some html code",
   author: "matthewvilhauer"
   },
   {
-  name: "Les Miserables",
+  name: "Another Javascript Test Snippet",
   language: "javascript",
   code: "here is some javascript code",
   author: "angelocisneros"
