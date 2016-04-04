@@ -53,15 +53,30 @@ app.get('/api', function api_index(req, res) {
  * Snippet API Endpoints
  */
 
- // get all Snippets
+ // Get all snippets
  app.get('/api/snippets', function (req, res) {
-   // send all books as JSON response
+   // send all snippets as JSON response
    db.Snippet.find(
      function(err, snippets){
      if (err) { return console.log("index error: " + err); }
      res.json(snippets);
    });
  });
+
+ // Create a new snippet
+ app.post('/api/snippets', function (req, res) {
+   // create new snippet with form data (`req.body`)
+   console.log('snippets create', req.body);
+   var newSnippet = new db.Snippet(req.body);
+   newSnippet.save(function handleDBSnippetSaved(err, savedSnippet) {
+     if (err) {
+      return console.log(err);
+    }
+     res.json(savedSnippet);
+   });
+ });
+
+
 
 /**********
  * SERVER *

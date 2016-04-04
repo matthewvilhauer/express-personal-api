@@ -17,6 +17,21 @@ $(document).ready(function(){
     success: handleSnippetSuccess,
     error: handleSnippetError
   });
+
+  $('#newSnippetForm').on('submit', function(e) {
+    e.preventDefault();
+    $.ajax({
+      method: 'POST',
+      url: '/api/snippets',
+      data: $(this).serialize(),
+      success: newSnippetSuccess,
+      error: newSnippetError
+    });
+  });
+
+
+
+
 });
 
 // helper function to render all posts to view
@@ -40,4 +55,14 @@ function handleSnippetSuccess(json) {
 function handleSnippetError(e) {
   console.log('uh oh');
   $('#snippetTarget').text('Failed to load snippets, is the server working?');
+}
+
+function newSnippetSuccess(json) {
+  $('#newSnippetForm input').val('');
+  allSnippets.push(json);
+  render();
+}
+
+function newSnippetError() {
+  console.log('newsnippet error!');
 }
