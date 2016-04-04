@@ -203,7 +203,8 @@ function githubSearch() {
 function githubSuccess(data) {
   $('#search-results').text('');
   var ghUsername = data[0].owner.login;
-  $('#search-results').append("<h3>User "+ghUsername+"'s Repositories:</h3><p>Click on a repository to search for code you want to add to your favorites.</p>");
+  var ghUserPicture = data[0].owner.avatar_url;
+  $('#search-results').append("<div class='row ghUser'><div class='col-sm-3'><img class='img-responsive ghImg' src="+ghUserPicture+"></div><div class='col-sm-9'><h3>User "+ghUsername+"'s Repositories:</h3><p>Click on a repository to search for code you want to add to your favorites.</p></div></div>");
   data.forEach(function(e) {
     console.log(e.name);
     $('#search-results').append("<a target="+"_blank"+" href="+e.html_url+">"+e.name+"</a>, ");
