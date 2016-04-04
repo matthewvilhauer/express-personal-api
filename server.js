@@ -35,7 +35,12 @@ app.get('/profile', function (req, res) {
 
 // Go to single snippet page
 app.get('/snippets/:id', function (req, res) {
-  res.send('views/single.html' , { root : __dirname});
+  db.Snippet.findById(req.params.id, function(err, snippet) {
+    if (err) {
+      return console.log("show error: " + err);
+    }
+    res.json(snippet);
+  });
 });
 
 // Go to the random Github snippet page
@@ -55,12 +60,12 @@ app.get('/api', function api_index(req, res) {
     base_url: "http://YOUR-APP-NAME.herokuapp.com", // CHANGE ME
     endpoints: [
         {method: "GET", path: "/api", description: "Describes all available endpoints"},
-        {method: "GET", path: "/api/profile", description: "Where you can learn all about me!"},
+        {method: "GET", path: "/api/profile", description: "Get all of my profile data for yourself"},
         {method: "GET", path: "/api/snippets", description: "Get a list of all my favorite snippets of code from Github"},
         {method: "POST", path: "/api/snippets", description: "Get a list of all my favorite snippets of code from Github"}, // Get all snippets
         {method: "GET", path: "/api/snippets/id", description: "Get a list of all my favorite snippets of code from Github"},  //Get a single snippet
         {method: "PUT", path: "/api/snippets/id", description: "Get a list of all my favorite snippets of code from Github"}, // Update a snippet
-        {method: "PUT", path: "/api/snippets/id", description: "Get a list of all my favorite snippets of code from Github"} // Delete a snippet
+        {method: "DELETE", path: "/api/snippets/id", description: "Delete a list of all my favorite snippets of code from Github"} // Delete a snippet
     ]
   });
 });

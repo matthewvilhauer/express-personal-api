@@ -91,23 +91,23 @@ function render() {
 }
 
 //helper function to render single post to view
-function renderSingle() {
-
-  $snippetSingle = $('#snippetSingleTarget');
-  // compile handlebars template for single snippet
-  var sourceSingle = $('#snippet-single-template').html();
-
-    template = Handlebars.compile(sourceSingle);
-
-  // empty existing snippets from view
-
-
-  // pass `allSnippets` into the template function
-  var snippetSingleHtml = template({ snippet: snippet_single });
-
-  // append html to the view
-  $snippetSingle.append(snippetSingleHtml);
-}
+// function renderSingle() {
+//
+//   $snippetSingle = $('#snippetSingleTarget');
+//   // compile handlebars template for single snippet
+//   var sourceSingle = $('#snippet-single-template').html();
+//
+//     template = Handlebars.compile(sourceSingle);
+//
+//   // empty existing snippets from view
+//
+//
+//   // pass `allSnippets` into the template function
+//   var snippetSingleHtml = template({ snippet: snippet_single });
+//
+//   // append html to the view
+//   $snippetSingle.append(snippetSingleHtml);
+// }
 
 /**********
  * Snippet functions *
@@ -127,9 +127,9 @@ function handleSnippetError(e) {
 
 // Get a single snippet
 function getSingleSnippetSuccess(json) {
-    var snippet_single = json;
+    allSnippets = json;
     console.log(snippet_single);
-    renderSingle();
+    render();
 }
 function getSingleSnippetError(e) {
   console.log('uh oh');
@@ -201,8 +201,9 @@ function githubSearch() {
 }
 
 function githubSuccess(data) {
+  $('#search-results').text('');
   var ghUsername = data[0].owner.login;
-  $('#search-results').append("<h4>GitHub User ID: "+ghUsername+"</h4>");
+  $('#search-results').append("<h3>User "+ghUsername+"'s Repositories:</h3><p>Click on a repository to search for code you want to add to your favorites.</p>");
   data.forEach(function(e) {
     console.log(e.name);
     $('#search-results').append("<a target="+"_blank"+" href="+e.html_url+">"+e.name+"</a>, ");
@@ -212,6 +213,8 @@ function githubSuccess(data) {
   // $("#results").append(data);
 }
 function githubError(e) {
+  $('#search-results').text('');
+  $('#search-results').html("<h4>No User found by that name, please try again.</h4>");
   console.log('Failed to load github search, is the server working?');
   //$('#results').text('Failed to load github search, is the server working?');
 }
