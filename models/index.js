@@ -3,4 +3,5 @@ mongoose.connect( process.env.MONGOLAB_URI ||
                   process.env.MONGOHQ_URL ||
                   "mongodb://localhost/personal-api");
 
-// module.exports.Campsite = require("./campsite.js.example");
+//Export the snippet object so it can be used on other pages
+module.exports.Snippet = require("./snippet.js");

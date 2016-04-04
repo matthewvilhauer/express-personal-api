@@ -8,3 +8,12 @@ h1 {
   margin-top: 100px;
   text-align: center;
 }
+
+.submit-button {
+  text-align: center;
+}
+
+#code-snippet-input {
+  width: 500px;
+  height: 200px;
+}

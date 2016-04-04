@@ -1,17 +1,14 @@
 // require express and other modules
-var express = require('express'),
-    app = express();
-
 // parse incoming urlencoded form data
-// and populate the req.body object
-var bodyParser = require('body-parser');
-app.use(bodyParser.urlencoded({ extended: true }));
-
-/************
- * DATABASE *
- ************/
-
 // var db = require('./models');
+var express = require('express'),
+    bodyParser = require('body-parser'),
+    db = require('./models');
+
+app = express();
+
+// populate the req.body object
+app.use(bodyParser.urlencoded({ extended: true }));
 
 /**********
  * ROUTES *
@@ -25,9 +22,9 @@ app.use(express.static('public'));
  * HTML Endpoints
  */
 
-app.get('/', function homepage(req, res) {
-  res.sendFile(__dirname + '/views/index.html');
-});
+ app.get('/', function (req, res) {
+   res.sendFile('views/index.html' , { root : __dirname});
+ });
 
 
 /*
@@ -37,17 +34,34 @@ app.get('/', function homepage(req, res) {
 app.get('/api', function api_index(req, res) {
   // TODO: Document all your api endpoints below
   res.json({
-    woops_i_has_forgot_to_document_all_my_endpoints: true, // CHANGE ME ;)
     message: "Welcome to my personal api! Here's what you need to know!",
-    documentation_url: "https://github.com/example-username/express_self_api/README.md", // CHANGE ME
+    documentation_url: "https://github.com/matthewvilhauer/express-personal-api/blob/master/README.md", // The README for this Github repository
     base_url: "http://YOUR-APP-NAME.herokuapp.com", // CHANGE ME
     endpoints: [
-      {method: "GET", path: "/api", description: "Describes all available endpoints"},
-      {method: "GET", path: "/api/profile", description: "Data about me"}, // CHANGE ME
-      {method: "POST", path: "/api/campsites", description: "E.g. Create a new campsite"} // CHANGE ME
+        {method: "GET", path: "/api", description: "Describes all available endpoints"},
+        {method: "GET", path: "/api/profile", description: "Where you can learn all about me!"},
+        {method: "GET", path: "/api/snippets", description: "Get a list of all my favorite snippets of code from Github"},
+        {method: "POST", path: "/api/snippets", description: "Get a list of all my favorite snippets of code from Github"}, // Get all snippets
+        {method: "GET", path: "/api/snippets/id", description: "Get a list of all my favorite snippets of code from Github"},  //Get a single snippet
+        {method: "PUT", path: "/api/snippets/id", description: "Get a list of all my favorite snippets of code from Github"}, // Update a snippet
+        {method: "PUT", path: "/api/snippets/id", description: "Get a list of all my favorite snippets of code from Github"} // Delete a snippet
     ]
-  })
+  });
 });
+
+/*
+ * Snippet API Endpoints
+ */
+
+ // get all Snippets
+ app.get('/api/snippets', function (req, res) {
+   // send all books as JSON response
+   db.Snippet.find(
+     function(err, snippets){
+     if (err) { return console.log("index error: " + err); }
+     res.json(snippets);
+   });
+ });
 
 /**********
  * SERVER *
