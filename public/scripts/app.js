@@ -139,6 +139,7 @@ function getSingleSnippetError(e) {
 // Create functions
 function newSnippetSuccess(json) {
   $('#newSnippetForm input').val('');
+  $('#newSnippetForm code').val('');
   allSnippets.push(json);
   render();
 }
