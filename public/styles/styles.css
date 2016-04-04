@@ -30,3 +30,10 @@ h1 {
 #code-snippet-output {
   float:left;
 }
+
+.ghUser {
+  margin-bottom: 20px;
+}
+.newSnippet {
+  margin-top: 20px;
+}
