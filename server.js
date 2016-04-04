@@ -10,6 +10,7 @@ app = express();
 // populate the req.body object
 app.use(bodyParser.urlencoded({ extended: true }));
 
+
 /**********
  * ROUTES *
  **********/
@@ -22,10 +23,25 @@ app.use(express.static('public'));
  * HTML Endpoints
  */
 
- app.get('/', function (req, res) {
-   res.sendFile('views/index.html' , { root : __dirname});
+// Home page
+app.get('/', function (req, res) {
+  res.sendFile('views/index.html' , { root : __dirname});
  });
 
+// Go to Profile page
+app.get('/profile', function (req, res) {
+  res.sendFile('views/profile.html' , { root : __dirname});
+ });
+
+// Go to single snippet page
+app.get('/snippets/:id', function (req, res) {
+  res.send('views/single.html' , { root : __dirname});
+});
+
+// Go to the random Github snippet page
+app.get('/snippets/random', function (req, res) {
+  res.sendFile('views/random.html' , { root : __dirname});
+});
 
 /*
  * JSON API Endpoints
@@ -76,7 +92,8 @@ app.get('/api/profile', function (req, res) {
    });
  });
 
- // Get one snippet
+
+// Get one snippet
 app.get('/api/snippets/:id', function (req, res) {
   // find one snippet by its id
   db.Snippet.findById(req.params.id, function(err, snippet) {

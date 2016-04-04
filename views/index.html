@@ -11,8 +11,8 @@
     <link rel="stylesheet" href="/styles/styles.css">
 
     <!-- VENDOR SCRIPTS -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.js"></script>
 
     <!-- APPLICATION SCRIPTS -->
     <script src="/scripts/app.js"></script>
@@ -22,9 +22,22 @@
       <div class="row">
         <div class="col-md-10 col-md-offset-1">
           <h1>My Personal API</h1>
+          <hr>
           <h4><a href="/api">Read My API Documentation</a></h4>
+          <h4><a href="/profile">View My Profile</a></h4>
+          <!--<h4><a href="/snippets/random">View a Random Snippet from GitHub</a></h4>-->
           </br>
 
+          <form id="search-form" class="form-inline">
+            <label>Search Github</label>
+            <input type="text" name="q" id="search-text" class="form-control search-input" placeholder="Enter Search Here...">
+            <input type="submit" value="Search!" id=search class="btn btn-success">
+          </form>
+          </br>
+          <div id="search-results"></div>
+          </br>
+          <h2>Create A New Snippet</h2>
+          <hr>
           <!-- New Snippet form -->
           <form class="form" id="newSnippetForm">
             <div class="row">
@@ -42,7 +55,7 @@
                   <input type="text" class="form-control" name="language" placeholder="HTML, CSS, Javascript, etc.">
                 </div>
               </div>
-              <div class="col-md-6">
+              <div class="col-md-8">
                 <div class="form-group">
                   <label for="title">Code</label>
                   <textarea type="textarea" id="code-snippet-input" class="form-control" name="code" placeholder="Paste Code Here"></textarea>
@@ -55,7 +68,7 @@
           </form><!-- Close the create form -->
 
           </br>
-          <h2> My Snippets</h2>
+          <h2>My Snippets</h2>
           <div id='snippetTarget'>
             <!-- handlebars template -->
             <script id="snippets-template" type="text/x-handlebars-template">
@@ -63,7 +76,7 @@
                 <hr>
                 <div class="snip-delete"><button type="button" name="button" class="deleteBtn-Snippet btn btn-danger pull-right" snippet-data-id={{_id}}>Delete</button></div>
                 <div class="snippet-info">
-                  <h4><b>{{name}}</b><b> by: </b><b>{{author}}</b></h4>
+                  <h4><a href="/snippets/{{_id}}"><b>{{name}}</b></a><b> by: </b><b>{{author}}</b></h4>
                   <p>Language: <b>{{language}}</b></p>
                   <pre>
                     <code id="code-snippet-input">{{code}}</code>

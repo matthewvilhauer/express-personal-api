@@ -1,15 +1,17 @@
 console.log("Sanity Check: JS is working!");
+// Handlebar variables for all snippets
 var template;
 var $snippetsList;
 var allSnippets;
 
+// Handlebar variables for a single snippet
+var templateSingle;
+var $snippetSingle;
+var snippetSingle;
+
 $(document).ready(function(){
 
-  $snippetsList = $('#snippetTarget');
-
-  // compile handlebars template
-  var source = $('#snippets-template').html();
-  template = Handlebars.compile(source);
+    $snippetsList = $('#snippetTarget');
 
   $.ajax({
     method: 'GET',
@@ -25,6 +27,13 @@ $(document).ready(function(){
     error: handleProfileError
   });
 
+  // $.ajax({
+  //   method: 'GET',
+  //   url: '/snippets/random',
+  //   success: handleRandomSuccess,
+  //   error: handleRandomError
+  // });
+
   $('#newSnippetForm').on('submit', function(e) {
     e.preventDefault();
     $.ajax({
@@ -33,6 +42,15 @@ $(document).ready(function(){
       data: $(this).serialize(),
       success: newSnippetSuccess,
       error: newSnippetError
+    });
+  });
+
+  $('.snippet-link').on('click', function() {
+    $.ajax({
+      method: 'GET',
+      url: '/snippets/'+$(this).attr('snippet-data-id'),
+      success: getSingleSnippetSuccess,
+      error: getSingleSnippetError
     });
   });
 
@@ -45,12 +63,21 @@ $(document).ready(function(){
     });
   });
 
+  $("#search-form").on("submit", function(e) {
+      e.preventDefault();
+      githubSearch();
+  });
 
 });
 
 // helper function to render all posts to view
 // note: we empty and re-render the collection each time our post data changes
 function render() {
+
+  // compile handlebars template
+  var source = $('#snippets-template').html();
+  template = Handlebars.compile(source);
+
   // empty existing snippets from view
   $snippetsList.empty();
   $('#code-snippet-input').val('');
@@ -63,19 +90,23 @@ function render() {
   $snippetsList.append(snippetsHtml);
 }
 
-/**********
- * Profile *
- **********/
+//helper function to render single post to view
+function renderSingle() {
 
-//Display index functions
-function handleProfileSuccess(json) {
-  allProfiles = json;
-  render();
-}
+  $snippetSingle = $('#snippetSingleTarget');
+  // compile handlebars template for single snippet
+  var sourceSingle = $('#snippet-single-template').html();
 
-function handleProfileError(e) {
-  console.log('uh oh');
-  $('#profileTarget').text('Failed to load profiles, is the server working?');
+    template = Handlebars.compile(sourceSingle);
+
+  // empty existing snippets from view
+
+
+  // pass `allSnippets` into the template function
+  var snippetSingleHtml = template({ snippet: snippet_single });
+
+  // append html to the view
+  $snippetSingle.append(snippetSingleHtml);
 }
 
 /**********
@@ -91,6 +122,18 @@ function handleSnippetSuccess(json) {
 function handleSnippetError(e) {
   console.log('uh oh');
   $('#snippetTarget').text('Failed to load snippets, is the server working?');
+}
+
+
+// Get a single snippet
+function getSingleSnippetSuccess(json) {
+    var snippet_single = json;
+    console.log(snippet_single);
+    renderSingle();
+}
+function getSingleSnippetError(e) {
+  console.log('uh oh');
+  $('#snippetSingleTarget').text('Failed to load the specified snippet, is the server working?');
 }
 
 
@@ -123,4 +166,52 @@ function deleteSnippetSuccess(json) {
 
 function deleteSnippetError() {
   console.log('deletesnippet error!');
+}
+
+
+/**********
+ * Profile *
+ **********/
+
+//Display index functions
+function handleProfileSuccess(json) {
+  allProfiles = json;
+}
+
+function handleProfileError(e) {
+  console.log('uh oh');
+  $('#profileTarget').text('Failed to load profiles, is the server working?');
+}
+
+
+/**********
+ * Random GitHub *
+ **********/
+function githubSearch() {
+
+  var github_endpoint = "https://api.github.com/users/";
+  var search_query = $("#search-text").val()+"/repos";
+
+  $.ajax({
+    method: 'GET',
+    url: github_endpoint+search_query,
+    success: githubSuccess,
+    error: githubError
+  });
+}
+
+function githubSuccess(data) {
+  var ghUsername = data[0].owner.login;
+  $('#search-results').append("<h4>GitHub User ID: "+ghUsername+"</h4>");
+  data.forEach(function(e) {
+    console.log(e.name);
+    $('#search-results').append("<a target="+"_blank"+" href="+e.html_url+">"+e.name+"</a>, ");
+  });
+  // my_repos = data.name;
+  // console.log(my_repos);
+  // $("#results").append(data);
+}
+function githubError(e) {
+  console.log('Failed to load github search, is the server working?');
+  //$('#results').text('Failed to load github search, is the server working?');
 }
