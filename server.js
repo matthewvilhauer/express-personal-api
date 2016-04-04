@@ -63,6 +63,17 @@ app.get('/api', function api_index(req, res) {
    });
  });
 
+ // Get one snippet
+app.get('/api/snippets/:id', function (req, res) {
+  // find one snippet by its id
+  db.Snippet.findById(req.params.id, function(err, snippet) {
+    if (err) {
+      return console.log("show error: " + err);
+    }
+    res.json(snippet);
+  });
+});
+
  // Create a new snippet
  app.post('/api/snippets', function (req, res) {
    // create new snippet with form data (`req.body`)
@@ -76,7 +87,16 @@ app.get('/api', function api_index(req, res) {
    });
  });
 
+ // delete snippet
+ app.delete('/api/snippets/:id', function (req, res) {
+   // get snippet id from url params (`req.params`)
+   console.log(req.params);
+   var snippetId = req.params.id;
 
+   db.Snippet.findOneAndRemove({ _id: snippetId }, function (err, deletedSnippet) {
+     res.json(deletedSnippet);
+   });
+ });
 
 /**********
  * SERVER *

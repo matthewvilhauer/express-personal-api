@@ -29,7 +29,14 @@ $(document).ready(function(){
     });
   });
 
-
+  $snippetsList.on('click', '.deleteBtn-Snippet', function() {
+    $.ajax({
+      method: 'DELETE',
+      url: '/api/snippets/'+$(this).attr('snippet-data-id'),
+      success: deleteSnippetSuccess,
+      error: deleteSnippetError
+    });
+  });
 
 
 });
@@ -47,6 +54,7 @@ function render() {
   $snippetsList.append(snippetsHtml);
 }
 
+//Display index functions
 function handleSnippetSuccess(json) {
   allSnippets = json;
   render();
@@ -57,6 +65,7 @@ function handleSnippetError(e) {
   $('#snippetTarget').text('Failed to load snippets, is the server working?');
 }
 
+// Create functions
 function newSnippetSuccess(json) {
   $('#newSnippetForm input').val('');
   allSnippets.push(json);
@@ -65,4 +74,23 @@ function newSnippetSuccess(json) {
 
 function newSnippetError() {
   console.log('newsnippet error!');
+}
+
+// Delete functions
+function deleteSnippetSuccess(json) {
+  var snippet = json;
+  var snippetId = snippet._id;
+  console.log('delete snippet', snippetId);
+  // find the snippet with the correct ID and remove it from our allSnippets array
+  for(var index = 0; index < allSnippets.length; index++) {
+    if(allSnippets[index]._id === snippetId) {
+      allSnippets.splice(index, 1);
+      break;  // we found our snippet - no reason to keep searching (this is why we didn't use forEach)
+    }
+  }
+  render();
+}
+
+function deleteSnippetError() {
+  console.log('deletesnippet error!');
 }

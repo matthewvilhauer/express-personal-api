@@ -39,7 +39,7 @@
                 </div>
                 <div class="form-group">
                   <label for="title">Language</label>
-                  <input type="text" class="form-control" name="author" placeholder="HTML, CSS, Javascript, etc.">
+                  <input type="text" class="form-control" name="language" placeholder="HTML, CSS, Javascript, etc.">
                 </div>
               </div>
               <div class="col-md-6">
@@ -60,14 +60,13 @@
             <!-- handlebars template -->
             <script id="snippets-template" type="text/x-handlebars-template">
               {{#each snippets}}
-              <hr>
-              <div class="snip-delete"><button type="button" name="button" class="deleteBtn btn btn-danger pull-right" data-id={{_id}}>Delete</button></div>
-              <div class="snippet-info">
-                <h4><b>{{name}}</b><b> by: </b><b>{{author}}</b></h4>
-                <p>Language: <b>{{language}}</b></p>
-                <p>{{code}}</p>
-              </div>
-
+                <hr>
+                <div class="snip-delete"><button type="button" name="button" class="deleteBtn-Snippet btn btn-danger pull-right" snippet-data-id={{_id}}>Delete</button></div>
+                <div class="snippet-info">
+                  <h4><b>{{name}}</b><b> by: </b><b>{{author}}</b></h4>
+                  <p>Language: <b>{{language}}</b></p>
+                  <p>{{code}}</p>
+                </div>
               {{/each}}
             </script>
           </div>
