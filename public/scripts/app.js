@@ -18,6 +18,13 @@ $(document).ready(function(){
     error: handleSnippetError
   });
 
+  $.ajax({
+    method: 'GET',
+    url: '/api/profile',
+    success: handleProfileSuccess,
+    error: handleProfileError
+  });
+
   $('#newSnippetForm').on('submit', function(e) {
     e.preventDefault();
     $.ajax({
@@ -46,6 +53,8 @@ $(document).ready(function(){
 function render() {
   // empty existing snippets from view
   $snippetsList.empty();
+  $('#code-snippet-input').val('');
+
 
   // pass `allSnippets` into the template function
   var snippetsHtml = template({ snippets: allSnippets });
@@ -53,6 +62,25 @@ function render() {
   // append html to the view
   $snippetsList.append(snippetsHtml);
 }
+
+/**********
+ * Profile *
+ **********/
+
+//Display index functions
+function handleProfileSuccess(json) {
+  allProfiles = json;
+  render();
+}
+
+function handleProfileError(e) {
+  console.log('uh oh');
+  $('#profileTarget').text('Failed to load profiles, is the server working?');
+}
+
+/**********
+ * Snippet functions *
+ **********/
 
 //Display index functions
 function handleSnippetSuccess(json) {
@@ -65,6 +93,7 @@ function handleSnippetError(e) {
   $('#snippetTarget').text('Failed to load snippets, is the server working?');
 }
 
+
 // Create functions
 function newSnippetSuccess(json) {
   $('#newSnippetForm input').val('');
@@ -75,6 +104,7 @@ function newSnippetSuccess(json) {
 function newSnippetError() {
   console.log('newsnippet error!');
 }
+
 
 // Delete functions
 function deleteSnippetSuccess(json) {

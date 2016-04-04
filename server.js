@@ -50,6 +50,19 @@ app.get('/api', function api_index(req, res) {
 });
 
 /*
+ * Profile API Endpoints
+ */
+
+app.get('/api/profile', function (req, res) {
+   // send all snippets as JSON response
+   db.Profile.find(
+     function(err, profile_fields){
+     if (err) { return console.log("index error: " + err); }
+     res.json(profile_fields);
+   });
+ });
+
+/*
  * Snippet API Endpoints
  */
 
@@ -97,6 +110,9 @@ app.get('/api/snippets/:id', function (req, res) {
      res.json(deletedSnippet);
    });
  });
+
+
+
 
 /**********
  * SERVER *

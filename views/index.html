@@ -45,7 +45,7 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="title">Code</label>
-                  <input type="text" id="code-snippet-input" class="form-control" name="code" placeholder="Paste Code Here">
+                  <textarea type="textarea" id="code-snippet-input" class="form-control" name="code" placeholder="Paste Code Here"></textarea>
                 </div>
               </div>
             </div>
@@ -65,7 +65,9 @@
                 <div class="snippet-info">
                   <h4><b>{{name}}</b><b> by: </b><b>{{author}}</b></h4>
                   <p>Language: <b>{{language}}</b></p>
-                  <p>{{code}}</p>
+                  <pre>
+                    <code id="code-snippet-input">{{code}}</code>
+                  </pre>
                 </div>
               {{/each}}
             </script>
